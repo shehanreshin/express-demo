@@ -1,24 +1,16 @@
 const express = require('express');
 const router = express.Router();
+const {
+    createBook, getBooks, getBook, updateBook, deleteBook
+} = require('../controller/book-controller');
 
-router.route('/').get((req, res) => {
-    res.status(200).json({ message: 'Get all books' });
-});
+router.route('/')
+    .post(createBook)
+    .get(getBooks);
 
-router.route('/:id').get((req, res) => {
-    res.status(200).json({ message: `Get book id: ${req.params.id}` });
-});
-
-router.route('/').post((req, res) => {
-    res.status(200).json({ message: 'Book saved' })
-});
-
-router.route('/:id').delete((req, res) => {
-    res.status(200).json({ message: `Book id: ${req.params.id} deleted` })
-});
-
-router.route('/:id').put((req, res) => {
-    res.status(200).json({ message: `Book id: ${req.params.id} updated` })
-});
+router.route('/:id')
+    .get(getBook)
+    .put(updateBook)
+    .delete(deleteBook);
 
 module.exports = router;
