@@ -1,5 +1,10 @@
 const createBook = (req, res) => {
-    res.status(201).json({ message: 'Create book' })
+    const { title, author, publisher } = req.body;
+    if (!title || !author || !publisher) {
+        res.status(400);
+        throw new Error("Ensure that all the fields are filled");
+    }
+    res.status(201).json({ message: 'Create book' });
 };
 
 const getBooks = (req, res) => {
@@ -11,11 +16,11 @@ const getBook = (req, res) => {
 };
 
 const updateBook = (req, res) => {
-    res.status(200).json({ message: `Book id: ${req.params.id} updated` })
+    res.status(200).json({ message: `Book id: ${req.params.id} updated` });
 };
 
 const deleteBook = (req, res) => {
-    res.status(200).json({ message: `Book id: ${req.params.id} deleted` })
+    res.status(200).json({ message: `Book id: ${req.params.id} deleted` });
 };
 
 module.exports = {
