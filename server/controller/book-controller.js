@@ -1,5 +1,6 @@
 const { constants } = require("../util/constant");
 const asyncHandler = require('express-async-handler');
+const Book = require('../model/book-model');
 
 const createBook = asyncHandler(async (req, res) => {
     const { title, author, publisher } = req.body;
@@ -7,11 +8,15 @@ const createBook = asyncHandler(async (req, res) => {
         res.status(constants.VALIDATION_ERROR);
         throw new Error("Ensure that all the fields are filled");
     }
-    res.status(constants.CREATED).json({ message: 'Create book' });
+
+    res.status(constants.CREATED).json(await Book.create({
+        title, author, publisher,
+    }));
 });
 
 const getBooks = asyncHandler(async (req, res) => {
-    res.status(constants.OK).json({ message: 'Get all books' });
+    const books = await Book.find();
+    res.status(constants.OK).json(books);
 });
 
 const getBook = asyncHandler(async (req, res) => {
