@@ -20,15 +20,37 @@ const getBooks = asyncHandler(async (req, res) => {
 });
 
 const getBook = asyncHandler(async (req, res) => {
-    res.status(constants.OK).json({ message: `Get book id: ${req.params.id}` });
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+        res.status(constants.NOT_FOUND);
+        throw new Error("Book not found");
+    }
+
+    res.status(constants.OK).json(book);
 });
 
 const updateBook = asyncHandler(async (req, res) => {
-    res.status(constants.OK).json({ message: `Book id: ${req.params.id} updated` });
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+        res.status(constants.NOT_FOUND);
+        throw new Error("Book not found");
+    }
+
+    res.status(constants.OK).json(await Book.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+    ));
 });
 
 const deleteBook = asyncHandler(async (req, res) => {
-    res.status(constants.OK).json({ message: `Book id: ${req.params.id} deleted` });
+    const book = await Book.findByIdAndDelete(req.params.id);
+    if (!book) {
+        res.status(constants.NOT_FOUND);
+        throw new Error("Book not found");
+    }
+
+    res.status(constants.OK).json(book);
 });
 
 module.exports = {
